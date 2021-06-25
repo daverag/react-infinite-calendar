@@ -1,8 +1,7 @@
 import React from 'react';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import classNames from 'classnames';
-import parse from 'date-fns/parse';
-import format from 'date-fns/format';
+import { parse, format } from 'date-fns';
 import styles from './Header.scss';
 import animation from './Animation.scss';
 
@@ -16,7 +15,12 @@ export default function defaultSelectionRenderer(value, {
   setDisplay,
   shouldAnimate,
 }) {
-  const date = parse(value);
+
+  console.log(value)
+  
+  const date = parse(value, 'yyyy-MM-dd', new Date());
+  console.log({dateFormat})
+
   const values = date && [
     {
       active: display === 'years',
@@ -45,13 +49,16 @@ export default function defaultSelectionRenderer(value, {
     },
   ];
 
+
   return (
     <div
       key={key}
       className={styles.wrapper}
-      aria-label={format(date, dateFormat + ' YYYY', {locale})}
+      aria-label={format(date, dateFormat + ' yyyy', {locale})}
     >
       {values.map(({handleClick, item, key, value, active, title}) => {
+     
+        
         return (
           <div
             key={item}

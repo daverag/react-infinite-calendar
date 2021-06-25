@@ -6,8 +6,7 @@ import {
 } from 'recompose';
 import {withDefaultProps} from './';
 import {sanitizeDate, withImmutableProps} from '../utils';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
+import { format, parse } from 'date-fns';
 
 export const enhanceDay = withPropsOnChange(['selected'], props => ({
   isSelected: props.selected === props.date,
@@ -32,7 +31,9 @@ export const withDateSelection = compose(
   withState('scrollDate', 'setScrollDate', props => props.selected || new Date()),
   withProps(({onSelect, setScrollDate, ...props}) => {
     const selected = sanitizeDate(props.selected, props);
-
+    
+    console.log('selected', selected)
+    
     return {
       passThrough: {
         Day: {
@@ -42,7 +43,7 @@ export const withDateSelection = compose(
           onSelect: (year) => handleYearSelect(year, {onSelect, selected, setScrollDate}),
         },
       },
-      selected: selected && format(selected, 'YYYY-MM-DD'),
+      selected: selected && format(selected, 'yyyy-MM-dd'),
     };
   }),
 );

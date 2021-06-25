@@ -11,13 +11,10 @@ import InfiniteCalendar, {
 } from '../';
 import styles from './stories.scss';
 
+
 // Date manipulation utils
-import addDays from 'date-fns/add_days';
-import addMonths from 'date-fns/add_months';
-import endOfMonth from 'date-fns/end_of_month';
-import format from 'date-fns/format';
-import isBefore from 'date-fns/is_before';
-import subMonths from 'date-fns/sub_months';
+import {addDays, addMonths, endOfMonth, format, isBefore, subMonths } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 const CenterDecorator = story => <div className={styles.center}>{story()}</div>;
 addDecorator(CenterDecorator);
@@ -25,7 +22,7 @@ addDecorator(CenterDecorator);
 const today = new Date();
 
 storiesOf('Basic settings', module)
-  .add('Default Configuration', () => <InfiniteCalendar />)
+  .add('Default Configuration', () => <InfiniteCalendar locale={fr} />)
   .add('Initially Selected Date', () => <InfiniteCalendar selected={addDays(today, 5)} />)
   .add('Blank Initial State', () => <InfiniteCalendar selected={null} />)
   .add('Min Date', () => (
@@ -81,9 +78,47 @@ storiesOf('Higher Order Components', module)
 storiesOf('Internationalization', module)
   .add('Locale', () => (
     <InfiniteCalendar
+      events={[
+        { 
+          start: new Date('2021-06-26 10:00:00'),
+          end: new Date('2021-06-26 12:00:00'),
+          description: 'Bla bla bla',
+          location: 'bla 2',
+          className: 'event-social',
+          repeat: ()=>{ return null },
+
+        },
+        { 
+          start: new Date('2021-06-26 10:00:00'),
+          end: new Date('2021-06-26 12:00:00'),
+          description: 'Bla bla bla',
+          location: 'bla 2',
+          className: 'event-academique',
+          repeat: ()=>{ return null },
+          
+        },
+        { 
+          start: new Date('2021-06-26 10:00:00'),
+          end: new Date('2021-06-26 12:00:00'),
+          description: 'Bla bla bla',
+          location: 'bla 2',
+          className: 'event-professionnel',
+          repeat: ()=>{ return null },
+          
+        },
+        { 
+          start: new Date('2021-06-26 10:00:00'),
+          end: new Date('2021-06-26 12:00:00'),
+          description: 'Bla bla bla',
+          location: 'bla 2',
+          className: 'event-sport',
+          repeat: ()=>{ return null },
+          
+        }
+      ]}
       locale={{
         blank: 'Aucune date sélectionnée',
-        headerFormat: 'dddd, D MMM',
+        headerFormat: 'EEEE d LLLL',        
         locale: require('date-fns/locale/fr'),
         todayLabel: {
           long: "Aujourd'hui",
@@ -199,7 +234,7 @@ storiesOf('Events', module)
   .add('On Select', () => (
     <InfiniteCalendar
       onSelect={date =>
-        alert(`You selected: ${format(date, 'ddd, MMM Do YYYY')}`)}
+        alert(`You selected: ${format(date, 'EEEE dd LLLL')}`)}
     />
   ))
   .add('On Scroll', () => [

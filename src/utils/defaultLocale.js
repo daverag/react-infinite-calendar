@@ -1,8 +1,8 @@
 module.exports = {
   blank: 'Select a date...',
-  headerFormat: 'ddd, MMM Do',
+  headerFormat: 'EEEE dd LLLL',
   todayLabel: {
-    long: 'Today',
+    long: `Aujourd'hui`,
   },
   weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
   weekStartsOn: 0,

@@ -2,10 +2,8 @@ import {compose, withProps, withPropsOnChange, withState} from 'recompose';
 import classNames from 'classnames';
 import {withDefaultProps} from './';
 import {withImmutableProps} from '../utils';
-import isBefore from 'date-fns/is_before';
 import enhanceHeader from '../Header/withRange';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
+import { format, parse, isBefore } from 'date-fns';
 import styles from '../Day/Day.scss';
 
 let isTouchDevice = false;
@@ -73,8 +71,8 @@ export const withRange = compose(
       },
     },
     selected: {
-      start: selected && format(selected.start, 'YYYY-MM-DD'),
-      end: selected && format(selected.end, 'YYYY-MM-DD'),
+      start: selected && format(selected.start, 'yyyy-MM-dd'),
+      end: selected && format(selected.end, 'yyyy-MM-dd'),
     },
   })),
 );

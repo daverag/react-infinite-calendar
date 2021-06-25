@@ -12,9 +12,8 @@ import MonthList from '../MonthList';
 import Weekdays from '../Weekdays';
 import Years from '../Years';
 import Day from '../Day';
-import parse from 'date-fns/parse';
-import format from 'date-fns/format';
-import startOfDay from 'date-fns/start_of_day';
+import { parse, format, startOfDay } from 'date-fns';
+
 
 const styles = {
   container: require('./Container.scss'),
@@ -73,6 +72,14 @@ export default class Calendar extends Component {
   		showWeekdays: PropTypes.bool,
       todayHelperRowOffset: PropTypes.number,
     }),
+    events: PropTypes.arrayOf(PropTypes.shape({
+      className: PropTypes.string,
+      description: PropTypes.string,
+      end: PropTypes.instanceOf(Date),
+      location: PropTypes.string,
+      repeat: PropTypes.func,
+      start: PropTypes.instanceOf(Date),
+    })),
     height: PropTypes.number,
     keyboardSupport: PropTypes.bool,
     locale: PropTypes.shape({
@@ -130,11 +137,12 @@ export default class Calendar extends Component {
       this.setState({display: nextProps.display});
     }
   }
-  updateYears(props = this.props) {
-    this._min = parse(props.min);
-    this._max = parse(props.max);
-    this._minDate = parse(props.minDate);
-    this._maxDate = parse(props.maxDate);
+  updateYears(props = this.props) {    
+
+    this._min = props.min;
+    this._max = props.max;
+    this._minDate = props.minDate;
+    this._maxDate = props.maxDate;
 
     const min = this._min.getFullYear();
     const minMonth = this._min.getMonth();
@@ -159,7 +167,7 @@ export default class Calendar extends Component {
     this.months = months;
   }
   getDisabledDates(disabledDates) {
-    return disabledDates && disabledDates.map((date) => format(parse(date), 'YYYY-MM-DD'));
+    return disabledDates && disabledDates.map((date) => format(parse(date), 'yyyy-MM-dd'));
   }
   _displayOptions = {};
   getDisplayOptions(displayOptions = this.props.displayOptions) {
@@ -278,8 +286,10 @@ export default class Calendar extends Component {
       selected,
 			tabIndex,
 			width,
+      events,
       YearsComponent,
 		} = this.props;
+    
     const {
       hideYearsOnSelect,
       layout,
@@ -291,7 +301,7 @@ export default class Calendar extends Component {
       showTodayHelper,
       showWeekdays,
     } = this.getDisplayOptions();
-    const {display, isScrolling, showToday} = this.state;
+    const {display, isScrolling, showToday} = this.state; 
     const disabledDates = this.getDisabledDates(this.props.disabledDates);
     const locale = this.getLocale();
     const theme = this.getTheme();
@@ -344,6 +354,7 @@ export default class Calendar extends Component {
                 this._MonthList = instance;
               }}
               DayComponent={DayComponent}
+              events={events}
               disabledDates={disabledDates}
               disabledDays={disabledDays}
               height={height}

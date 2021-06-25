@@ -45,7 +45,7 @@ export const withMultipleDates = compose(
     },
     selected: props.selected
       .filter(date => sanitizeDate(date, props))
-      .map(date => format(date, 'YYYY-MM-DD')),
+      .map(date => format(date, 'yyyy-MM-dd')),
   })),
 );
 
@@ -63,8 +63,8 @@ function getInitialDate({selected}) {
 }
 
 export function defaultMultipleDateInterpolation(date, selected) {
-  const selectedMap = selected.map(date => format(date, 'YYYY-MM-DD'));
-  const index = selectedMap.indexOf(format(date, 'YYYY-MM-DD'));
+  const selectedMap = selected.map(date => format(date, 'yyyy-MM-dd'));
+  const index = selectedMap.indexOf(format(date, 'yyyy-MM-dd'));
 
   return (index === -1)
     ? [...selected, date]

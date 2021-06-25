@@ -7,8 +7,10 @@ export default class Day extends PureComponent {
   handleClick = () => {
     let {date, isDisabled, onClick} = this.props;
 
+    date = parse(date, 'yyyy-MM-dd', new Date())
+
     if (!isDisabled && typeof onClick === 'function') {
-      onClick(parse(date));
+      onClick(date);
     }
   };
 
@@ -55,9 +57,12 @@ export default class Day extends PureComponent {
       monthShort,
       theme: {selectionColor, todayColor},
       year,
+      events,
     } = this.props;
     let color;
 
+    if(typeof events !== 'undefined')    console.log({events, day:date})
+   
     if (isSelected) {
       color = this.selectionColor = typeof selectionColor === 'function'
         ? selectionColor(date)
@@ -80,6 +85,13 @@ export default class Day extends PureComponent {
         data-date={date}
         {...handlers}
       >
+        <div className="events">
+          { events.map(event => {
+            return (
+              <div className={`event ${event.className}`}></div>
+            )
+          })}
+        </div>        
         {day === 1 && <span className={styles.month}>{monthShort}</span>}
         {isToday ? <span>{day}</span> : day}
         {day === 1 &&

@@ -1,9 +1,7 @@
 import React, {PureComponent} from 'react';
 import classNames from 'classnames';
 import {getDateString} from '../utils';
-import format from 'date-fns/format';
-import getDay from 'date-fns/get_day';
-import isSameYear from 'date-fns/is_same_year';
+import {format, getDay, isSameYear, isSameDay } from 'date-fns';
 import styles from './Month.scss';
 
 export default class Month extends PureComponent {
@@ -22,7 +20,10 @@ export default class Month extends PureComponent {
       today,
       theme,
       passThrough,
+      events,
     } = this.props;
+    
+    console.log('Month events', events)
     const currentYear = today.getFullYear();
     const year = monthDate.getFullYear();
     const month = monthDate.getMonth();
@@ -34,9 +35,9 @@ export default class Month extends PureComponent {
     let date, days, dow, row;
 
     // Used for faster comparisons
-    const _today = format(today, 'YYYY-MM-DD');
-    const _minDate = format(minDate, 'YYYY-MM-DD');
-    const _maxDate = format(maxDate, 'YYYY-MM-DD');
+    const _today = format(today, 'yyyy-MM-dd');
+    const _minDate = format(minDate, 'yyyy-MM-dd');
+    const _maxDate = format(maxDate, 'yyyy-MM-dd');
 
 		// Oh the things we do in the name of performance...
     for (let i = 0, len = rows.length; i < len; i++) {
@@ -57,12 +58,23 @@ export default class Month extends PureComponent {
 					disabledDates && disabledDates.length && disabledDates.indexOf(date) !== -1
 				);
 
+        let dateObject = new Date(date);
+        let dayEvents = []
+        
+        events.map(event => {
+          if(isSameDay(dateObject, event.start)) {
+            dayEvents.push(event)
+          }
+        })
+
+   
         days[k] = (
 					<DayComponent
 						key={`day-${day}`}
 						currentYear={currentYear}
 						date={date}
 						day={day}
+            events={dayEvents}
             selected={selected}
 						isDisabled={isDisabled}
 						isToday={isToday}
@@ -96,7 +108,7 @@ export default class Month extends PureComponent {
 
   render() {
     const {locale: {locale}, monthDate, today, rows, rowHeight, showOverlay, style, theme} = this.props;
-    const dateFormat = isSameYear(monthDate, today) ? 'MMMM' : 'MMMM YYYY';
+    const dateFormat = isSameYear(monthDate, today) ? 'MMMM' : 'MMMM yyyy';
 
     return (
       <div className={styles.root} style={{...style, lineHeight: `${rowHeight}px`}}>

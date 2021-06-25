@@ -9,8 +9,8 @@ import {
   getWeeksInMonth,
   animate,
 } from '../utils';
-import parse from 'date-fns/parse';
-import startOfMonth from 'date-fns/start_of_month';
+import { parse, startOfMonth } from 'date-fns';
+
 import Month from '../Month';
 import styles from './MonthList.scss';
 
@@ -79,8 +79,9 @@ export default class MonthList extends Component {
   }
 
   getDateOffset(date) {
+    
     const {min, rowHeight, locale: {weekStartsOn}, height} = this.props;
-    const weeks = getWeek(startOfMonth(min), parse(date), weekStartsOn);
+    const weeks = getWeek(startOfMonth(min), date, weekStartsOn);
 
     return weeks * rowHeight - (height - rowHeight/2) / 2;
   }
@@ -121,6 +122,7 @@ export default class MonthList extends Component {
       DayComponent,
       disabledDates,
       disabledDays,
+      events,
       locale,
       maxDate,
       minDate,
@@ -132,7 +134,7 @@ export default class MonthList extends Component {
       theme,
       today,
     } = this.props;
-
+    
     let {month, year} = months[index];
     let key = `${year}:${month}`;
     let {date, rows} = this.memoize(key);
@@ -143,6 +145,7 @@ export default class MonthList extends Component {
         selected={selected}
         DayComponent={DayComponent}
         monthDate={date}
+        events={events}
         disabledDates={disabledDates}
         disabledDays={disabledDays}
         maxDate={maxDate}
